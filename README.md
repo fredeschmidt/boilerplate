@@ -1,2 +1,2 @@
-# fredeschmidt boiler
+# Boilerplate
 
