@@ -14,6 +14,7 @@ var paths = {
   // deployProduction: 'proud/assets/fonts'
 };
 
+
 /*********************************************
 *   Required
 *********************************************/
@@ -42,7 +43,7 @@ function swallowError (error) {
 }
 
 
-/******************************************
+/*******************************************
 *   CLEAN
 *******************************************/
 gulp.task('clean', function () {
@@ -50,10 +51,10 @@ gulp.task('clean', function () {
   .pipe(rimraf({ force: true }));
 });
 
-/******************************************
+
+/*******************************************
 *   CACHE BUSTING
 *******************************************/
-
 var uuid = 'xxxxxxxx-xxxx-Txxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var d = new Date().getTime();
     var r = (d + Math.random() * 16) % 16 | 0;
@@ -66,10 +67,9 @@ gulp.task('fingerprint', function (cb) {
 });
 
 
-/*========================================
-  SASS
-========================================*/
-
+/*******************************************
+*  SASS
+*******************************************/
 gulp.task('sass', function() {
     gulp.src(paths.srcSass)
         .pipe(include())
@@ -89,10 +89,10 @@ gulp.task('sass', function() {
         .pipe(gulp.dest(paths.deployCss))
 });
 
-/*========================================
-  JS
-========================================*/
 
+/*******************************************
+*  JS
+*******************************************/
 gulp.task('js', function() {
     gulp.src('src/js/app.js')
         .pipe(include())
@@ -103,18 +103,20 @@ gulp.task('js', function() {
         .pipe( gulp.dest('deploy/assets/js') );
 });
 
-/*========================================
-  HTML
-========================================*/
+
+/*******************************************
+*  HTML
+*******************************************/
 gulp.task('html', function() {
     gulp.src('src/layouts/*.html')
         .pipe(include())
         .pipe( gulp.dest('deploy/') );
 });
 
-/*========================================
-  Images
-========================================*/
+
+/*******************************************
+*  Images
+*******************************************/
 gulp.task('images', function() {
     gulp.src('src/images/**/*')
         .pipe(gulpif(production, imagemin([
@@ -132,7 +134,7 @@ gulp.task('images', function() {
 });
 
 
-/******************************************
+/*******************************************
 *   FONTS
 *******************************************/
 gulp.task('fonts', function () {
@@ -140,10 +142,10 @@ gulp.task('fonts', function () {
         .pipe( gulp.dest('deploy/assets/fonts') );
 });
 
-/*========================================
-  WATCH
-========================================*/
 
+/*******************************************
+*  WATCH
+*******************************************/
 gulp.task('watch', ['build'],function() {
   gulp.watch('src/sass/**/*.scss', ['sass']);
   gulp.watch('src/js/**/*.js', ['js']);
@@ -151,7 +153,6 @@ gulp.task('watch', ['build'],function() {
   gulp.watch('src/images/**/*', ['images']);
   gulp.watch('src/fonts/**/*', ['fonts']);
 });
-
 
 gulp.task('build', function (){
     sequence(['sass', 'js', 'html','images', 'fonts'])
@@ -161,67 +162,3 @@ gulp.task('deploy', function (){
   production = true;
   sequence('clean', ['build']);
 })
-
-// /*========================================
-//   SASS-CSS
-// ========================================*/
-
-// gulp.task('css', function() {
-// 	return gulp.src('src/scss/style.scss')
-//     .pipe(sourcemaps.init())
-//     .pipe(autoprefixer({
-//         browsers: ['last 4 versions'],
-//         cascade: true,
-//         remove: true
-//     }))
-//     .pipe(sass()).on('error', sass.logError)
-//     .pipe(sourcemaps.write())
-//     .pipe(gulp.dest('build/css'))
-//         .pipe(sourcemaps.init({ loadMaps: true }))
-//         .pipe(cleanCSS())
-//         .pipe(rename('style.min.css'))
-//         .pipe(sourcemaps.write())
-//         .pipe(gulp.dest('build/css'))
-// })
-
-// /*========================================
-//   LAYOUTS
-// =========================================*/
-
-// gulp.task("layout", function() {
-//   console.log("-- gulp is running task 'layout'");
- 
-//   gulp.src("src/layout/pages/*.html")
-//     .pipe(include())
-//       .on('error', console.log)
-//     .pipe(gulp.dest("build"))
-// });
-
-// /*========================================
-//   TASKS
-// ========================================*/
-
-// gulp.task('images', function() {
-//     gulp.src('src/images/*')
-//         .pipe(imagemin())
-//         .pipe(gulp.dest('build/images'))
-// });
-
-// gulp.task('watch', function() {
-
-//     gulp.watch('src/scss/**/*.scss', ['css'])
-//     gulp.watch('src/js/*.js', ['js'])
-//     gulp.watch('src/images/*', ['images'])
-//     gulp.watch('src/layout/**/*.html', ['layout'])
-// })
-
-// gulp.task('clean', function() {
-// 	return gulp.src(['build'], { read: false })
-// 		.pipe(rimraf())
-// })
-
-// gulp.task('build', ['js', 'css', 'layout', 'images'])
-
-// gulp.task('default', ['clean'], function() {
-//     gulp.start('build')
-// })
